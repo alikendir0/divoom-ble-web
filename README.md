@@ -1,6 +1,8 @@
 # divoom-ble-web
 
-Control the screen of a Divoom 16×16 pixel display (Pixoo, Ditoo, Timoo, …) from a web page or a simple HTTP API, over Bluetooth LE, without the Divoom app.
+Control the screen of Bluetooth Divoom devices with 16×16 displays (Pixoo, Ditoo, Timoo and similar) from a web page or an HTTP API, without the Divoom app.
+
+Tested with the Pixoo SlingBag and the Ditoo Plus.
 
 ![The built-in animations, as they look on the screen](docs/images/presets.gif)
 
