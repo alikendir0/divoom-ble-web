@@ -13,7 +13,13 @@ A small background app with no window. It keeps one Divoom screen connected and 
   - Asleep (eyes shut, still, a little "z" floating up): nothing new for 10 minutes.
   - Squinting: more than 85% of the 5-hour limit is used. A bar also turns red and pulses above 85%.
 
+Tested on a Divoom Ditoo Plus and a Pixoo SlingBag.
+
 Clawd is the Claude Code mascot by Anthropic. This is a fan-made example, not affiliated with Anthropic or Divoom.
+
+<img src="photo.jpg" alt="The usage screen on a Ditoo Plus, next to the web page" width="520">
+
+*On a Ditoo Plus.*
 
 ## How the numbers get here
 

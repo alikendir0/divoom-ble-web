@@ -137,7 +137,7 @@ PRESETS["blink"] = ("Red blink", 0.5, 1.0, blink)   # title, seconds per frame, 
 
 ## Examples
 
-- **[Claude usage screen](examples/claude_usage/)**: a background app that shows Claude Code's 5-hour and weekly usage limits as two bars, with an animated Clawd, the Claude Code mascot.
+- **[Claude usage screen](examples/claude_usage/)**: a background app that shows Claude Code's 5-hour and weekly usage limits as two bars, with an animated Clawd, the Claude Code mascot. Tested on a Ditoo Plus and a Pixoo SlingBag.
 
   ![Claude usage example](examples/claude_usage/clawd-usage.gif)
 
