@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#dfe2dc">
+<title>Divoom screens</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 6'%3E%3Cpath fill='%23eb143c' d='M1 0h2v1h1V0h2v1h1v2H6v1H5v1H4v1H3V5H2V4H1V3H0V1h1z'/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="bar">
+  <div class="link" id="link" data-state="connecting">
+    <nav class="devices" id="devices" aria-label="Which screen to control"></nav>
+    <span id="link-text">Connecting…</span>
+  </div>
+  <label class="bright" title="Screen brightness">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>
+    <span class="sr">Brightness</span>
+    <input id="brightness" type="range" min="0" max="100" value="100">
+    <output id="brightness-out">–</output>
+  </label>
+</header>
+
+<main class="layout">
+  <section class="stage" aria-label="Screen">
+    <div class="bezel">
+      <canvas id="panel" width="512" height="512" aria-label="16 by 16 pixel screen; draw here"></canvas>
+    </div>
+    <p class="caption" id="caption">This is what the screen shows. Draw on it.</p>
+  </section>
+
+  <section class="controls">
+    <nav class="tabs" role="tablist" aria-label="What to show">
+      <button role="tab" aria-selected="true" data-tab="fun">Fun</button>
+      <button role="tab" data-tab="draw">Draw</button>
+      <button role="tab" data-tab="text">Text</button>
+      <button role="tab" data-tab="widget">Data</button>
+      <button role="tab" data-tab="picture">Picture</button>
+      <button role="tab" data-tab="builtin">Built-in</button>
+    </nav>
+
+    <div class="pane" id="pane-fun" role="tabpanel">
+      <div class="grid presets" id="presets"></div>
+      <p class="hint">Animations are uploaded once; the screen then plays them by itself.</p>
+    </div>
+
+    <div class="pane" id="pane-draw" role="tabpanel" hidden>
+      <div class="tools" role="radiogroup" aria-label="Tool">
+        <button class="tool" data-tool="pen" aria-pressed="true">Pen</button>
+        <button class="tool" data-tool="erase" aria-pressed="false">Eraser</button>
+        <button class="tool" data-tool="fill" aria-pressed="false">Fill</button>
+        <button class="tool" data-tool="pick" aria-pressed="false">Pick colour</button>
+      </div>
+      <div class="swatches" id="swatches" aria-label="Colours"></div>
+      <div class="row">
+        <label class="field colour"><span>Colour</span><input type="color" id="pen-colour" value="#f2c230"></label>
+        <button class="ghost" id="clear">Clear screen</button>
+      </div>
+    </div>
+
+    <div class="pane" id="pane-text" role="tabpanel" hidden>
+      <label class="field"><span>Message</span>
+        <textarea id="text" rows="2" placeholder="Type and it appears on the screen">HELLO</textarea></label>
+      <div class="row wrap">
+        <label class="field"><span>Size</span>
+          <select id="text-font"><option value="big">Large, one line</option><option value="small">Small, two lines</option></select></label>
+        <label class="field colour"><span>Text</span><input type="color" id="text-colour" value="#ffffff"></label>
+        <label class="field colour"><span>Background</span><input type="color" id="text-bg" value="#000000"></label>
+      </div>
+      <label class="field"><span>Scroll speed</span><input type="range" id="text-speed" min="4" max="40" value="14"></label>
+      <p class="hint">Changes go to the screen as you type. Long text scrolls on its own.</p>
+    </div>
+
+    <div class="pane" id="pane-widget" role="tabpanel" hidden>
+
+      <div class="row wrap">
+        <label class="field"><span>Label</span><input id="w-label" maxlength="24" value="BPM"></label>
+        <label class="field"><span>Value</span><input id="w-value" maxlength="24" value="72"></label>
+      </div>
+      <label class="field check"><input type="checkbox" id="w-bar-on" checked><span>Show a bar along the bottom</span></label>
+      <label class="field"><span>Bar level</span><input type="range" id="w-bar" min="0" max="100" value="60"></label>
+      <div class="row wrap">
+        <label class="field colour"><span>Value</span><input type="color" id="w-colour" value="#ffffff"></label>
+        <label class="field colour"><span>Label</span><input type="color" id="w-label-colour" value="#8a93a0"></label>
+        <label class="field colour"><span>Bar</span><input type="color" id="w-bar-colour" value="#2f5bea"></label>
+      </div>
+      <p class="hint">This is the layout your phone can feed later, through the same settings in the API below.</p>
+    </div>
+
+    <div class="pane" id="pane-picture" role="tabpanel" hidden>
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="image/*">
+        <span><strong>Choose a picture or GIF</strong><br>or drop it here. Animated GIFs keep playing.</span>
+      </label>
+      <label class="field"><span>Framing</span>
+        <select id="fit"><option value="cover">Fill the screen (crop edges)</option><option value="contain">Show the whole picture</option></select></label>
+    </div>
+
+    <div class="pane" id="pane-builtin" role="tabpanel" hidden>
+      <p class="hint">Hand the screen back to the device’s own modes. Drawing or typing again takes it over.</p>
+      <div class="grid">
+        <button class="ghost" data-channel="clock">Clock</button>
+        <button class="ghost" data-channel="cloud">Cloud gallery</button>
+        <button class="ghost" data-channel="visualizer">Music visualizer</button>
+        <button class="ghost" data-channel="custom">My custom pages</button>
+      </div>
+      <div class="row wrap">
+        <label class="field"><span>Effect</span><input type="number" id="vj-index" min="0" max="15" value="0"></label>
+        <button class="ghost" data-channel="vj">Show effect</button>
+      </div>
+      <div class="row wrap">
+        <label class="field colour"><span>Lamp colour</span><input type="color" id="light-colour" value="#ffb347"></label>
+        <button class="ghost" data-channel="light">Use as a lamp</button>
+      </div>
+      <button class="ghost" id="redraw">Redraw my last screen</button>
+    </div>
+
+    <details class="api">
+      <summary>Send things from your phone or scripts</summary>
+      <p>Anything on the same Wi-Fi can update the screen with a plain HTTP request:</p>
+      <pre id="api-examples"></pre>
+      <p class="hint">With several screens, add <code>?device=&lt;name&gt;</code> to choose one; without it the first is used. <code>GET /api/devices</code> lists them.</p>
+      <p class="hint">Other endpoints: <code>/api/pixels</code>, <code>/api/paint</code>, <code>/api/fill</code>, <code>/api/preset</code>, <code>/api/image</code>, <code>/api/brightness</code>, <code>/api/channel</code>, <code>/api/state</code>.</p>
+    </details>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

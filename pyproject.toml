@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "divoom-ble-web"
+version = "0.1.0"
+description = "Real-time web control and REST API for Divoom 16x16 Bluetooth pixel displays (Pixoo, Ditoo, ...)"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Ali Kendir" }]
+requires-python = ">=3.10"
+dependencies = ["aiohttp>=3.9", "bleak>=0.22", "Pillow>=10"]
+keywords = ["divoom", "pixoo", "ditoo", "bluetooth", "ble", "led", "pixel-art"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Home Automation",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.urls]
+Homepage = "https://github.com/alikendir0/divoom-ble-web"
+
+[project.scripts]
+divoom-ble = "divoom_ble.__main__:main"
+
+[tool.setuptools]
+packages = ["divoom_ble"]
+
+[tool.setuptools.package-data]
+divoom_ble = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "examples/claude_usage"]
+pythonpath = [".", "examples/claude_usage"]
